@@ -29,7 +29,8 @@ async function connectDB() {
     return client;
 }
 
-function getDB() {
+async function getDB() {
+    await connectDB();
     if (!db) {
         throw new Error('Database not connected. Call connectDB() first.');
     }
@@ -45,32 +46,32 @@ async function closeConnection() {
 }
 
 async function insertOne(collectionName, document) {
-    const db = getDB();
+    const db = await getDB();
     return db.collection(collectionName).insertOne(document);
 }
 
 async function find(collectionName, query = {}, options = {}) {
-    const db = getDB();
+    const db = await getDB();
     return db.collection(collectionName).find(query, options).toArray();
 }
 
 async function findOne(collectionName, query = {}, options = {}) {
-    const db = getDB();
+    const db = await getDB();
     return db.collection(collectionName).findOne(query, options);
 }
 
 async function updateOne(collectionName, filter, update, options = {}) {
-    const db = getDB();
+    const db = await getDB();
     return db.collection(collectionName).updateOne(filter, { $set: update }, options);
 }
 
 async function deleteOne(collectionName, filter, options = {}) {
-    const db = getDB();
+    const db = await getDB();
     return db.collection(collectionName).deleteOne(filter, options);
 }
 
 async function countDocuments(collectionName, query = {}, options = {}) {
-    const db = getDB();
+    const db = await getDB();
     return db.collection(collectionName).countDocuments(query, options);
 }
 

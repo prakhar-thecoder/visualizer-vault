@@ -1,26 +1,44 @@
-require('dotenv').config();
 const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const adminRoutes = require('./routes/adminRoutes');
+const { connectDB } = require('./utils/db');
 
-// Initialize express app
+// Initialize Express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+// Connect to MongoDB
+connectDB().catch(console.error);
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// Basic route
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Visualizer Vault API' });
+// Set view engine to EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'templates'));
+
+// Static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use('/admin', adminRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(500).send('Something went wrong!');
 });
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Backend is up and running!' });
 });
 
 // Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 module.exports = app;

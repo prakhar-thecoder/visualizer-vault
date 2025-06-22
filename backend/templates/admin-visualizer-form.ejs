@@ -6,6 +6,7 @@
     <title><%= title %></title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         .form-input:focus {
             outline: none;
@@ -13,6 +14,36 @@
         }
         .tag-input {
             min-height: 38px;
+        }
+        .markdown-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 0rem;
+        }
+        .markdown-preview {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 200px;
+            background: white;
+        }
+        .markdown-preview h1, .markdown-preview h2, .markdown-preview h3 {
+            color: #1f2937;
+        }
+        .markdown-preview p {
+            color: #4b5563;
+        }
+        .markdown-preview code {
+            background-color: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+        }
+        .markdown-preview pre {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
         }
     </style>
 </head>
@@ -115,7 +146,7 @@
                                 name="link" 
                                 value="<%= visualizer.link || '' %>" 
                                 required
-                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                                 placeholder="https://example.com/visualizer"
                             >
                         </div>
@@ -138,20 +169,36 @@
                             </p>
                         </div>
 
-                        <!-- Details -->
-                        <div>
-                            <label for="details" class="block text-sm font-medium text-gray-700 mb-1">Detailed Description</label>
-                            <textarea 
-                                id="details" 
-                                name="details" 
-                                rows="5"
-                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                                placeholder="A detailed description of what this visualizer demonstrates, how it works, etc."
-                            ><%= visualizer.details || '' %></textarea>
-                            <p class="mt-1 text-xs text-gray-500">
-                                A detailed explanation of the visualizer (supports multiple lines)
-                            </p>
+                        <!-- Details with Markdown Preview -->
+                        <label for="details" class="block text-sm font-medium text-gray-700 mb-1">Details <span class="text-red-500">*</span></label>
+                        <div class="markdown-container">
+                            <div>
+                                <textarea 
+                                    id="details" 
+                                    name="details" 
+                                    rows="20"
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="Enter detailed description using markdown..."
+                                ><%= visualizer.details || '' %></textarea>
+                            </div>
+                            <div class="markdown-preview" id="markdownPreview">
+                                <p>Preview will appear here...</p>
+                            </div>
                         </div>
+                        <script>
+                            document.getElementById('details').addEventListener('input', function() {
+                                const markdown = this.value;
+                                const preview = document.getElementById('markdownPreview');
+                                preview.innerHTML = marked.parse(markdown);
+                            });
+                            
+                            // Initialize preview with existing content
+                            document.addEventListener('DOMContentLoaded', function() {
+                                const markdown = document.getElementById('details').value;
+                                const preview = document.getElementById('markdownPreview');
+                                preview.innerHTML = marked.parse(markdown);
+                            });
+                        </script>
 
                         <!-- Tags -->
                         <div>

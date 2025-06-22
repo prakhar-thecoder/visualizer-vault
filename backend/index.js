@@ -32,7 +32,7 @@ app.use((err, req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Backend is up and running!' });
+    res.redirect('/admin');
 });
 
 // Start server

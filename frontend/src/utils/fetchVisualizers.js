@@ -1,9 +1,9 @@
 export const fetchVisualizers = async () => {
   try {
-    const endpoint = process.env.REACT_APP_FIREBASE_VISUALIZERS_ENDPOINT;
+    const endpoint = `${process.env.REACT_APP_BASE_URL}/visualizers/all`;
     
     if (!endpoint) {
-      throw new Error('Firebase endpoint is not configured. Please set REACT_APP_FIREBASE_VISUALIZERS_ENDPOINT in your .env file');
+      throw new Error('Base URL is not configured. Please set REACT_APP_BASE_URL in your .env file');
     }
 
     const response = await fetch(endpoint);
@@ -13,7 +13,6 @@ export const fetchVisualizers = async () => {
     }
     
     let data = await response.json();
-    data = JSON.parse(data);
     
     // Convert the Firebase object to an array if needed
     return Array.isArray(data) ? data : Object.values(data || {});

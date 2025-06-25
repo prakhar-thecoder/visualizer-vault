@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const adminRoutes = require('./routes/adminRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 const { connectDB } = require('./utils/db');
@@ -12,6 +13,9 @@ const app = express();
 connectDB().catch(console.error);
 
 // Middleware
+app.use(cors({
+    origin: '*',
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

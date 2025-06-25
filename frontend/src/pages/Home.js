@@ -1,10 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaSearch, FaChevronLeft, FaChevronRight, FaArrowRight, FaSpinner } from 'react-icons/fa';
+import { FaSearch, FaChevronLeft, FaChevronRight, FaArrowRight } from 'react-icons/fa';
 import VisualizerCard from '../components/VisualizerCard';
 import { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import { fetchVisualizers } from '../utils/fetchVisualizers';
+import Loader from '../components/Loader';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,12 +82,7 @@ const Home = () => {
           <SearchBar onSearch={handleSearch} />
           
           {/* Loading and Error States */}
-          {isLoading && (
-            <div className="flex justify-center items-center py-12">
-              <FaSpinner className="animate-spin text-orange-500 text-4xl" />
-              <span className="ml-3 text-gray-600">Loading visualizers...</span>
-            </div>
-          )}
+          {isLoading && <Loader message="Loading visualizers..." />}
 
           {error && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4 my-4 mx-6">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaExternalLinkAlt, FaInfoCircle } from 'react-icons/fa';
+import Pill from './Pill';
 
 const VisualizerCard = ({ visualizer, subjectId }) => {
   return (
@@ -11,22 +12,19 @@ const VisualizerCard = ({ visualizer, subjectId }) => {
       </p>
       <div className="mb-3 flex flex-wrap gap-1">
         {visualizer.tags.slice(0, 5).map((tag) => (
-          <span 
-            key={tag} 
-            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800"
-          >
+          <Pill key={tag}>
             {tag}
-          </span>
+          </Pill>
         ))}
         {visualizer.tags.length > 5 && (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-50 text-orange-600 border border-orange-200">
+          <Pill variant="muted">
             +{visualizer.tags.length - 5} more
-          </span>
+          </Pill>
         )}
       </div>
       <div className="flex gap-2 mt-auto">
         <Link
-          to={`/visualizers/${subjectId}/${visualizer.id}`}
+          to={`/visualizer/${subjectId}/${visualizer.id}`}
           className="flex-1 text-center py-2 px-3 bg-white border border-orange-500 text-orange-600 rounded-md hover:bg-orange-50 transition-colors text-sm font-medium flex items-center justify-center gap-1"
         >
           <span>Show Details</span>

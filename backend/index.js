@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const adminRoutes = require('./routes/adminRoutes');
+const apiRoutes = require('./routes/apiRoutes');
 const { connectDB } = require('./utils/db');
 
 // Initialize Express app
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 app.use('/admin', adminRoutes);
+app.use('/api', apiRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

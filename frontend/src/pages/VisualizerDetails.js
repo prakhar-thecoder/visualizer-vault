@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaExternalLinkAlt, FaTags } from 'react-icons/fa';
 import { fetchVisualizer } from '../utils/fetchVisualizer';
 import Loader from '../components/Loader';

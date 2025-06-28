@@ -6,9 +6,34 @@ import { useState } from 'react';
 import SearchBar from '../components/SearchBar';
 import { fetchVisualizers } from '../utils/fetchVisualizers';
 import Loader from '../components/Loader';
+import { FaStar } from 'react-icons/fa';
+import { getStarredVisualizers } from '../utils/localStorage';
+import StarButton from '../components/StarButton';
 
 const Home = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [starredVisualizers, setStarredVisualizers] = useState([]);
+
+  useEffect(() => {
+    const updateStarredVisualizers = () => {
+      const starred = getStarredVisualizers();
+      setStarredVisualizers(starred);
+    };
+  
+    updateStarredVisualizers();
+  
+    const handleCustomStarChange = () => {
+      updateStarredVisualizers();
+    };
+  
+    window.addEventListener('starred-visualizers-changed', handleCustomStarChange);
+  
+    return () => {
+      window.removeEventListener('starred-visualizers-changed', handleCustomStarChange);
+    };
+  }, []);
+  
+
   const [visualizers, setVisualizers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -77,7 +102,7 @@ const Home = () => {
       </section>
       
       {/* Main Content */}
-      <main className="py-12">
+      <main className="pt-12">
         <div className="w-full px-4">
           <SearchBar onSearch={handleSearch} />
           
@@ -98,6 +123,40 @@ const Home = () => {
               </div>
             </div>
           )}
+
+          {/* Starred Visualizers */}
+          { !isLoading && !error &&
+          <div className="mt-12">
+            <div className="flex items-center gap-4">
+            <h2 className="text-2xl font-bold text-gray-800 border-b-[3px] border-orange-500 inline-block">
+              Starred Visualizers
+            </h2>
+            <FaStar className="text-yellow-500 text-2xl" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+              {starredVisualizers.length === 0 ? (
+                <div className="col-span-full text-center p-8 bg-white rounded-lg shadow-sm border border-gray-100">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">No Starred Visualizers</h3>
+                  <p className="text-gray-600 mb-4 flex flex-row items-center justify-center">
+                    Star your favorite visualizers by clicking the <StarButton className=" inline" muted /> icon on any visualizer card.
+                  </p>
+                </div>
+              ) : (
+              starredVisualizers.map((visualizerKey) => {
+                const [subjectName, visualizerId] = visualizerKey.split('/');
+                const subject = visualizers.find(s => s.id === subjectName);
+                const visualizer = subject?.visualizers.find(v => v.id === visualizerId);
+                
+                if (!visualizer) return null;
+                
+                return (
+                  <VisualizerCard visualizer={visualizer} subjectId={subjectName} />
+                );
+              })
+            )}
+            </div>
+          </div>
+          }
 
           {/* Visualizers by Subject */}
           <div className="mt-12 space-y-12">

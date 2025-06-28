@@ -2,11 +2,20 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaExternalLinkAlt, FaInfoCircle } from 'react-icons/fa';
 import Pill from './Pill';
+import StarButton from './StarButton';
+import { isVisualizerStarred } from '../utils/localStorage';
 
 const VisualizerCard = ({ visualizer, subjectId }) => {
   return (
-    <div className="flex-shrink-0 w-80 p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-orange-400 transition-all duration-200 flex flex-col">
-      <h3 className="font-medium text-orange-600">{visualizer.name}</h3>
+    <div className="flex-shrink-0 w-80 border border-gray-200 rounded-lg hover:shadow-md hover:border-orange-400 transition-all duration-200 flex flex-col relative p-4">
+      <div className="flex justify-between items-center">
+        <h3 className="font-medium text-orange-600">{visualizer.name}</h3>
+        <StarButton 
+          visualizerId={visualizer.id} 
+          subjectName={subjectId} 
+          isStarred={isVisualizerStarred(subjectId, visualizer.id)} 
+        />
+      </div>
       <p className="text-sm text-gray-600 mt-1 mb-3 flex-grow">
         {visualizer.description}
       </p>

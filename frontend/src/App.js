@@ -4,6 +4,8 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Subject from './pages/Subject';
 import VisualizerDetails from './pages/VisualizerDetails';
+import About from './pages/About';
+import Contribute from './pages/Contribute';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/visualizers/:subjectId" element={<Subject />} />
             <Route path="/visualizer/:subjectId/:visualizerId" element={<VisualizerDetails />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contribute" element={<Contribute />} />
             {/* Add more routes here as we create more pages */}
           </Routes>
         </main>

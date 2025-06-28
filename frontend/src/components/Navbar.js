@@ -4,15 +4,17 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <nav className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
         <div className="flex justify-between h-16">
           {/* Logo and Name */}
           <div className="flex-shrink-0 flex items-center">
             <div className="flex items-center">
-              <div className="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center">
-                <span className="text-white font-bold">VV</span>
-              </div>
-              <span className="ml-2 text-xl font-bold text-gray-900">Visualizer Vault</span>
+              <img 
+                src="/logo.png" 
+                alt="Visualizer Vault Logo" 
+                className="h-10 w-10"
+              />
+              <span className="ml-2 text-xl font-bold text-orange-500">Visualizer Vault</span>
             </div>
           </div>
           

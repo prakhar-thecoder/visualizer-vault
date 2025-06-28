@@ -131,7 +131,8 @@ router.get('/visualizer/:subjectId/:visualizerId', async (req, res) => {
             details: visualizer.details || '',
             link: visualizer.link,
             tags: visualizer.tags || [],
-            updatedAt: visualizer.updatedAt
+            updatedAt: visualizer.updatedAt,
+            imageUrls: visualizer.imageUrls || []
         };
         
         res.status(200).json(response);

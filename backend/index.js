@@ -2,9 +2,19 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const multer = require('multer');
 const adminRoutes = require('./routes/adminRoutes');
 const apiRoutes = require('./routes/apiRoutes');
 const { connectDB } = require('./utils/db');
+const { uploadImage } = require('./utils/imagekit');
+
+// Configure multer for memory storage
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB limit
+    },
+});
 
 // Initialize Express app
 const app = express();

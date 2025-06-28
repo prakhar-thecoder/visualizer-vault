@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { find, findOne, insertOne, updateOne, deleteOne } = require('../utils/db');
 const { requireAuth } = require('../middleware/auth');
+const multer = require('multer');
+const { uploadImage } = require('../utils/imagekit'); // Adjust path as needed
+
+const upload = multer(); // Store in memory
 
 // Helper function to handle async errors
 const asyncHandler = fn => (req, res, next) => {
@@ -190,7 +194,6 @@ router.get('/subjects/:id/edit', asyncHandler(async (req, res) => {
 router.post('/subjects/:id', asyncHandler(async (req, res) => {
     const { name, description } = req.body;
     const { id } = req.params;
-    console.log(id);
     
     // Basic validation
     if (!name || !description) {
@@ -298,7 +301,7 @@ router.get('/visualizers/new', asyncHandler(async (req, res) => {
 }));
 
 // Create New Visualizer
-router.post('/visualizers', asyncHandler(async (req, res) => {
+router.post('/visualizers', upload.array('images', 5), asyncHandler(async (req, res) => {
     const { subjectId, id, name, link, description, details, tags } = req.body;
     const tagArray = typeof tags === 'string' ? tags.split(',').map(tag => tag.trim()) : [];
     
@@ -313,6 +316,17 @@ router.post('/visualizers', asyncHandler(async (req, res) => {
             error: 'Subject, ID, Name, and Link are required',
             isEdit: false
         });
+    }
+
+    // Upload new images
+    let imageUrls = [];
+    if (req.files && req.files.length > 0) {
+        const uploads = await Promise.all(
+            req.files.map((file, index) => 
+                uploadImage(file, `${index+1}.${file.originalname.split('.').pop()}`, `${subjectId}/${id}`)
+            )
+        );
+        imageUrls = uploads.map(upload => upload.url);
     }
 
     // Validate ID format
@@ -351,9 +365,11 @@ router.post('/visualizers', asyncHandler(async (req, res) => {
         description: description || '',
         details: details || '',
         tags: tagArray,
+        imageUrls: imageUrls,
         createdAt: new Date(),
         updatedAt: new Date()
     });
+    
 
     res.redirect('/admin/visualizers?success=Visualizer created successfully');
 }));
@@ -382,7 +398,7 @@ router.get('/visualizers/:id/edit', asyncHandler(async (req, res) => {
 }));
 
 // Update Visualizer
-router.post('/visualizers/:id', asyncHandler(async (req, res) => {
+router.post('/visualizers/:id', upload.array('images', 5), asyncHandler(async (req, res) => {
     const { subjectId, id, name, link, description, details, tags } = req.body;
     const tagArray = typeof tags === 'string' ? tags.split(',').map(tag => tag.trim()) : [];
     
@@ -397,6 +413,17 @@ router.post('/visualizers/:id', asyncHandler(async (req, res) => {
             error: 'Subject, ID, Name, and Link are required',
             isEdit: true
         });
+    }
+    
+    // Upload new images
+    let imageUrls = [];
+    if (req.files && req.files.length > 0) {
+        const uploads = await Promise.all(
+            req.files.map((file, index) => 
+                uploadImage(file, `${index+1}.${file.originalname.split('.').pop()}`, `${subjectId}/${id}`)
+            )
+        );
+        imageUrls = uploads.map(upload => upload.url);
     }
 
     // Get current visualizer
@@ -433,6 +460,7 @@ router.post('/visualizers/:id', asyncHandler(async (req, res) => {
             description: description || '',
             details: details || '',
             tags: tagArray,
+            imageUrls: imageUrls,
             updatedAt: new Date()
         }
     );

@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaExternalLinkAlt, FaTags, FaBug, FaGithub, FaEnvelope, FaTimes } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaBug, FaGithub, FaEnvelope, FaTags, FaArrowLeft, FaTimes } from 'react-icons/fa';
 import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css';
-import { fetchVisualizer } from '../utils/fetchVisualizer';
 import Loader from '../components/Loader';
 import Pill from '../components/Pill';
 import { marked } from 'marked';
 import StarButton from '../components/StarButton';
 import { isVisualizerStarred } from '../utils/localStorage';
+import { fetchVisualizer } from '../utils/fetchVisualizer';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 // Configure marked to use a safe mode
 marked.setOptions({
@@ -99,9 +104,9 @@ const VisualizerDetails = () => {
           <FaArrowLeft className="mr-2" />
           Back
         </button>
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between p-6 mb-6 bg-white rounded-lg shadow-lg border border-2 border-orange-500 mx-4">
           <div className='flex flex-col gap-2'>
-            <div className="flex it ems-center gap-2">
+            <div className="flex items-center gap-2">
               <h1 className="text-3xl font-bold text-gray-800">{visualizer.name}</h1>
               <StarButton 
                 visualizerId={visualizer.id} 
@@ -130,7 +135,19 @@ const VisualizerDetails = () => {
           </div>
         </div>
 
-        <div className="prose max-w-none">
+        {/* Image Carousel */}
+        {visualizer.imageUrls && visualizer.imageUrls.length > 0 && (
+          <Swiper autoplay={{ delay: 3000, pauseOnMouseEnter: true }} pagination={{clickable: true}} navigation={true} modules={[Navigation, Pagination, Autoplay]} spaceBetween={30} speed={1000} loop={true} className="w-[50%]">
+            {visualizer.imageUrls.reverse().map((imageUrl) => (
+              <SwiperSlide key={imageUrl}>
+                <img src={imageUrl} alt="Visualizer" />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
+
+        {/* Visualizer Details */}
+        <div className="prose max-w-none mt-8">
           <div className="">
             <div dangerouslySetInnerHTML={{ __html: marked(visualizer.details) }} />
           </div>

@@ -137,7 +137,10 @@ const VisualizerDetails = () => {
 
         {/* Image Carousel */}
         {visualizer.imageUrls && visualizer.imageUrls.length > 0 && (
-          <Swiper autoplay={{ delay: 3000, pauseOnMouseEnter: true }} pagination={{clickable: true}} navigation={true} modules={[Navigation, Pagination, Autoplay]} spaceBetween={30} speed={1000} loop={true} className="w-[50%]">
+          <Swiper autoplay={{ delay: 3000, pauseOnMouseEnter: true }} pagination={{clickable: true}} navigation={true} modules={[Navigation, Pagination, Autoplay]} spaceBetween={30} speed={1000} loop={true} className="w-[50%]" style={{
+            "--swiper-pagination-color": "red",
+            "--swiper-navigation-color": "red",
+          }}>
             {visualizer.imageUrls.reverse().map((imageUrl) => (
               <SwiperSlide key={imageUrl}>
                 <img src={imageUrl} alt="Visualizer" />

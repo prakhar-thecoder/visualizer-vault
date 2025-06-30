@@ -106,8 +106,20 @@ const About = () => {
           </div>
         </section>
 
+        <section className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Disclaimer</h2>
+          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+            <p className="text-gray-700">
+              The visualizations and external links featured on this website may not be owned or created by the maintainers of Visualizer Vault. 
+              We strive to properly attribute all content and respect intellectual property rights. 
+              If you are the creator of any content featured here and would like to be properly credited or have concerns about its inclusion, 
+              please reach out to us via email or open an issue on our GitHub repository.
+            </p>
+          </div>
+        </section>
+
         <section>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Contact</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 mt-8">Contact</h2>
           <p className="text-gray-700 mb-4">
             Have questions or suggestions? We'd love to hear from you!
           </p>

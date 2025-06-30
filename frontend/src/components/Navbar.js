@@ -7,7 +7,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between h-16">
           {/* Logo and Name */}
-          <div className="flex-shrink-0 flex items-center">
+          <Link to="/" className="flex-shrink-0 flex items-center">
             <div className="flex items-center">
               <img 
                 src="/logo.png" 
@@ -16,7 +16,7 @@ const Navbar = () => {
               />
               <span className="ml-2 text-xl font-bold text-orange-500">Visualizer Vault</span>
             </div>
-          </div>
+          </Link>
           
           {/* Navigation Links */}
           <div className="hidden md:ml-6 md:flex md:items-center md:space-x-8">

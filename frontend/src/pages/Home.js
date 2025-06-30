@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaSearch, FaChevronLeft, FaChevronRight, FaArrowRight } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight, FaArrowRight } from 'react-icons/fa';
 import VisualizerCard from '../components/VisualizerCard';
 import { useState } from 'react';
 import SearchBar from '../components/SearchBar';
@@ -91,11 +91,11 @@ const Home = () => {
           </p>
           <div className="space-x-4">
             <Link 
-              to="/" 
+              to="/about" 
               className="inline-flex items-center bg-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-600 transition-colors"
             >
-              <FaSearch className="mr-2" />
-              Explore Visualizers
+              Know more about the project
+              <FaArrowRight className="ml-2" />
             </Link>
           </div>
         </div>

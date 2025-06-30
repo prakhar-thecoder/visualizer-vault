@@ -460,7 +460,7 @@ router.post('/visualizers/:id', upload.array('images', 5), asyncHandler(async (r
             description: description || '',
             details: details || '',
             tags: tagArray,
-            imageUrls: imageUrls,
+            imageUrls: imageUrls.length > 0 ? imageUrls : currentVisualizer.imageUrls,
             updatedAt: new Date()
         }
     );

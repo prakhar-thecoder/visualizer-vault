@@ -56,6 +56,23 @@ const VisualizerDetails = () => {
     loadVisualizer();
   }, [subjectId, visualizerId]);
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.tailwindcss.com?plugins=typography';
+    script.async = true;
+    document.body.appendChild(script);
+  
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.min.css';
+    document.head.appendChild(link);
+  
+    return () => {
+      document.body.removeChild(script);
+      document.head.removeChild(link);
+    };
+  }, []);  
+
   if (loading) {
     return <Loader message="Loading visualizer..." />;
   }
@@ -149,8 +166,21 @@ const VisualizerDetails = () => {
           </Swiper>
         )}
 
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .markdown-body ul {
+              list-style-type: disc;
+              padding-left: 2em;
+            }
+            .markdown-body ol {
+              list-style-type: decimal;
+              padding-left: 2em;
+            }
+          `
+        }} />
+
         {/* Visualizer Details */}
-        <div className="prose max-w-none mt-8">
+        <div className="markdown-body max-w-none mt-8">
           <div className="">
             <div dangerouslySetInnerHTML={{ __html: marked(visualizer.details) }} />
           </div>

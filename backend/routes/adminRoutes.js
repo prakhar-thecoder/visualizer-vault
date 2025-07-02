@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
         
         // Store the token in the database with an expiration time (24 hours from now)
         const expiresAt = new Date();
-        expiresAt.setHours(expiresAt.getHours() + 24);
+        expiresAt.setHours(expiresAt.getHours() + 24*30);
         
         await insertOne('sessions', {
             token,
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
         res.cookie('auth_token', token, { 
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+            maxAge: 24 * 60 * 60 * 1000 * 30 // One month
         });
         
         return res.redirect('/admin/dashboard');
